@@ -2,12 +2,12 @@ import Dashboard from "../Dashboard";
 
 export function meta() {
   return [
-    { title: "Kaspa Explorer | Track Blocks & Transactions" },
+    { title: "FireCash Explorer | Track Blocks & Transactions" },
     {
       name: "description",
-      content: "Kaspa Explorer. Track transactions, blocks, miners, and the BlockDAG in real-time.",
+      content: "FireCash Explorer. Track transactions, blocks, miners, and the BlockDAG in real-time.",
     },
-    { name: "keywords", content: "Kaspa explorer, blockchain tracker, Kaspa blocks, transactions, miners, DAG" },
+    { name: "keywords", content: "FireCash explorer, blockchain tracker, FireCash blocks, transactions, miners, DAG" },
   ];
 }
 

@@ -1,28 +1,35 @@
-import Spinner from "./Spinner";
 import AccountBalanceWallet from "./assets/account_balance_wallet.svg";
-import BackToTab from "./assets/back_to_tab.svg";
 import Box from "./assets/box.svg";
 import Coins from "./assets/coins.svg";
 import Dag from "./assets/dag.svg";
-import FlashOn from "./assets/flash_on.svg";
-import KaspaDifferent from "./assets/kaspadifferent.svg";
-import Landslide from "./assets/landslide.svg";
-import Rocket from "./assets/rocket_launch.svg";
+import Shield from "./assets/verified_user.svg";
 import Swap from "./assets/swap.svg";
 import Time from "./assets/time.svg";
 import Trophy from "./assets/trophy.svg";
-import VerifiedUser from "./assets/verified_user.svg";
+import Landslide from "./assets/landslide.svg";
+import Spinner from "./Spinner";
 import SearchBox from "./header/SearchBox";
-import { useAddressDistribution } from "./hooks/useAddressDistribution";
 import { useBlockdagInfo } from "./hooks/useBlockDagInfo";
 import { useBlockReward } from "./hooks/useBlockReward";
 import { useCoinSupply } from "./hooks/useCoinSupply";
 import { useHalving } from "./hooks/useHalving";
+import { useShieldedPool } from "./hooks/useShieldedPool";
 import { useTransactionsCount } from "./hooks/useTransactionsCount";
+import { useIncomingBlocks } from "./hooks/useIncomingBlocks";
+import { BRAND } from "./config/brand";
 import numeral from "numeral";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { useState } from "react";
+import { Link } from "react-router";
 
-const TOTAL_SUPPLY = 28_700_000_000;
+dayjs.extend(relativeTime);
+
+// Terminal FireCash supply (~5.15B FC), used only for the "mined %" gauge.
+const TOTAL_SUPPLY = 5_150_000_000;
+
+const shortHash = (h?: string) => (h && h.length > 16 ? `${h.slice(0, 8)}…${h.slice(-6)}` : (h ?? "—"));
+const ago = (ts?: string) => (ts ? dayjs(Number(ts)).fromNow() : "—");
 
 const Dashboard = () => {
   const [search, setSearch] = useState("");
@@ -32,37 +39,87 @@ const Dashboard = () => {
   const { data: blockReward, isLoading: isLoadingBlockReward } = useBlockReward();
   const { data: halving, isLoading: isLoadingHalving } = useHalving();
   const { data: transactionsCount, isLoading: isLoadingTxCount } = useTransactionsCount();
-  const { data: addressDistribution, isLoading: isLoadingDistribution } = useAddressDistribution();
+  const { data: shielded, isLoading: isLoadingShielded } = useShieldedPool();
+  const { blocks, transactions } = useIncomingBlocks();
 
+  const sompiToFc = (v?: string) => numeral((Number(v) || 0) / 1_0000_0000).format("0,0");
   const totalTxCount = isLoadingTxCount
     ? ""
     : Math.floor((transactionsCount!.regular + transactionsCount!.coinbase) / 1_000_000).toString();
 
-  const getAddressCountAbove1KAS = () => {
-    if (!addressDistribution) return;
-    return addressDistribution[0].tiers?.reduce((acc, curr) => acc + (curr.tier > 0 ? curr.count : 0), 0);
-  };
-
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-[6fr_5fr] rounded-4xl bg-white px-4 py-12 sm:px-8 sm:py-10 md:ps-20 md:py-20 lg:ps-24 xl:ps-36">
+      {/* Hero — short, search-first */}
+      <div className="grid grid-cols-1 md:grid-cols-[6fr_5fr] rounded-4xl bg-white px-4 py-10 sm:px-8 sm:py-10 md:ps-20 md:py-14 lg:ps-24 xl:ps-36">
         <div className="flex w-full flex-col gap-y-3 justify-center">
-          <span className="text-3xl lg:text-[54px]">Kaspa Explorer</span>
-          <span className="mb-6 text-lg">
-            Kaspa is the fastest, open-source, decentralized & fully scalable Layer-1 PoW network in the world.
+          <span className="text-3xl lg:text-[54px]">FireCash Explorer</span>
+          <span className="mb-4 text-gray-500">
+            Live blocks &amp; private transactions on the shielded BlockDAG.
           </span>
           <SearchBox value={search} onChange={setSearch} className="w-full py-4" />
         </div>
         <Dag className="w-full h-full md:ps-13 mt-2 md:mt-0" />
       </div>
-      <div className="flex w-full flex-col rounded-4xl bg-gray-50 px-4 py-12 text-white sm:px-8 sm:py-12 md:px-20 md:py-20 lg:px-24 lg:py-24 xl:px-36 xl:py-26">
-        <span className="mb-7 text-black text-3xl md:text-4xl lg:text-5xl">Kaspa by the numbers</span>
+
+      {/* LIVE FEED — the centerpiece */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <LivePanel title="Latest blocks" to="/blocks">
+          {blocks.length === 0 ? (
+            <FeedEmpty />
+          ) : (
+            blocks.slice(0, 10).map((b) => (
+              <Link
+                key={b.block_hash}
+                to={`/blocks/${b.block_hash}`}
+                className="flex items-center gap-x-3 rounded-xl px-3 py-2.5 hover:bg-gray-50"
+              >
+                <Box className="fill-primary w-5 shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <div className="text-black">{numeral(b.blueScore).format("0,0")}</div>
+                  <div className="truncate font-mono text-xs text-gray-500">{shortHash(b.block_hash)}</div>
+                </div>
+                <div className="shrink-0 text-right">
+                  <div className="text-black">{b.txCount} tx</div>
+                  <div className="text-xs text-gray-500">{ago(b.timestamp)}</div>
+                </div>
+              </Link>
+            ))
+          )}
+        </LivePanel>
+
+        <LivePanel title="Latest transactions" to="/transactions">
+          {transactions.length === 0 ? (
+            <FeedEmpty />
+          ) : (
+            transactions.slice(0, 10).map((t) => {
+              const valueSompi = t.outputs.reduce((acc, o) => acc + Number(o[0]), 0);
+              return (
+                <Link
+                  key={t.txId}
+                  to={`/transactions/${t.txId}`}
+                  className="flex items-center gap-x-3 rounded-xl px-3 py-2.5 hover:bg-gray-50"
+                >
+                  <Swap className="fill-primary w-5 shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate font-mono text-xs text-black">{shortHash(t.txId)}</div>
+                    <div className="text-xs text-gray-500">{ago(t.timestamp)}</div>
+                  </div>
+                  <div className="shrink-0 text-right">
+                    <div className="text-black">{numeral(valueSompi / 1_0000_0000).format("0,0.[00]")} FC</div>
+                    <div className="text-xs text-primary">shielded</div>
+                  </div>
+                </Link>
+              );
+            })
+          )}
+        </LivePanel>
+      </div>
+
+      {/* Compact stats */}
+      <div className="flex w-full flex-col rounded-4xl bg-gray-50 px-4 py-8 text-gray-900 sm:px-8 md:px-20 md:py-12 lg:px-24 xl:px-36">
+        <span className="mb-5 text-black text-2xl md:text-3xl">{BRAND.name} by the numbers</span>
         <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
-          <DashboardBox
-            description="Total transactions"
-            value={`> ${totalTxCount} M`}
-            icon={<Swap className="w-5" />}
-          />
+          <DashboardBox description="Total transactions" value={`> ${totalTxCount} M`} icon={<Swap className="w-5" />} />
           <DashboardBox
             description="Total blocks"
             value={numeral(blockDagInfo?.virtualDaaScore || 0).format("0,0")}
@@ -72,7 +129,7 @@ const Dashboard = () => {
           <DashboardBox
             description="Total supply"
             value={numeral((coinSupply?.circulatingSupply || 0) / 1_0000_0000).format("0,0")}
-            unit="KAS"
+            unit="FC"
             icon={<Coins className="w-5" />}
             loading={isLoadingCoinSupply}
           />
@@ -85,15 +142,15 @@ const Dashboard = () => {
           />
           <DashboardBox description="Average block time" value={"0.1"} unit="s" icon={<Time className="w-5" />} />
           <DashboardBox
-            description="Wallet addresses"
-            value={`${numeral(getAddressCountAbove1KAS()).format("0,")}`}
+            description="Shielded notes"
+            value={numeral(shielded?.noteCount ?? 0).format("0,0")}
             icon={<AccountBalanceWallet className="w-5" />}
-            loading={isLoadingDistribution}
+            loading={isLoadingShielded}
           />
           <DashboardBox
             description="Block reward"
             value={(blockReward?.blockreward || 0).toFixed(3)}
-            unit="KAS"
+            unit="FC"
             icon={<Trophy className="w-5" />}
             loading={isLoadingBlockReward}
           />
@@ -106,60 +163,69 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-y-4 gap-x-4 px-4 pt-4 pb-10 text-black sm:px-8 sm:pt-6 sm:pb-12 md:px-20 md:pt-8 md:pb-20 lg:flex-row lg:px-24 lg:pt-12 lg:pb-24 xl:px-36 xl:pt-14 xl:pb-38">
-        <div className="col-span-1 md:col-span-3">
-          <DashboardInfoBox
-            description="A digital ledger enabling parallel blocks and instant transaction confirmation –
-          built on a robust proof-of-work engine with rapid single-second block intervals."
-            title="The world’s first BlockDAG"
-            icon={<Rocket className="w-5" />}
+      {/* Compact shielded pool */}
+      <div className="flex w-full flex-col rounded-4xl bg-gray-50 px-4 py-8 sm:px-8 md:px-20 md:py-12 lg:px-24 xl:px-36">
+        <div className="mb-5 flex items-center gap-x-3">
+          <Shield className="fill-primary w-6" />
+          <span className="text-black text-2xl md:text-3xl">The shielded pool</span>
+        </div>
+        <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
+          <DashboardBox
+            description="Current anchor (note-tree root)"
+            value={shortHash(shielded?.anchor)}
+            icon={<Shield className="w-5" />}
+            loading={isLoadingShielded}
           />
-        </div>
-        <div className="col-span-1 md:col-span-3">
-          <DashboardInfoBox
-            description="Kaspa enables near-instant transaction confirmations, ensuring seamless and efficient user experiences for payments and transfers."
-            title="Instant Transactions"
-            icon={<Rocket className="w-5" />}
+          <DashboardBox
+            description="Value shielded (turnstile in)"
+            value={sompiToFc(shielded?.turnstileIn)}
+            unit="FC"
+            icon={<Coins className="w-5" />}
+            loading={isLoadingShielded}
           />
-        </div>
-        <div className="col-span-1 md:col-span-2">
-          <DashboardInfoBox
-            description="Designed with scalability in mind, Kaspa handles high transaction volumes without compromising speed or decentralization."
-            title="Scalable Network"
-            icon={<BackToTab className="w-5" />}
+          <DashboardBox
+            description="Nullifiers (shielded spends)"
+            value={numeral(shielded?.nullifierCount ?? 0).format("0,0")}
+            icon={<Swap className="w-5" />}
+            loading={isLoadingShielded}
           />
-        </div>
-        <div className="col-span-1 md:col-span-2">
-          <DashboardInfoBox
-            description="Kaspa uses innovative technology to minimize energy consumption, making it a greener choice in blockchain networks."
-            title="Energy Efficiency"
-            icon={<FlashOn className="w-5" />}
+          <DashboardBox
+            description="Emission per block"
+            value={(shielded?.emissionPerBlock ?? BRAND.initialReward).toString()}
+            unit="FC"
+            icon={<Trophy className="w-5" />}
+            loading={isLoadingShielded}
           />
-        </div>
-        <div className="col-span-1 md:col-span-2">
-          <DashboardInfoBox
-            description="With its robust and decentralized infrastructure, Kaspa ensures secure transactions without reliance on central authorities."
-            title="Decentralized Security"
-            icon={<VerifiedUser className="w-5" />}
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-y-3 rounded-4xl bg-white px-4 py-12 sm:px-8 sm:py-12 md:px-20 md:py-20 lg:px-24 lg:py-24 xl:px-36 xl:py-38">
-        <div className="flex flex-col">
-          <div className="text-5xl">Kaspa is built differently.</div>
-          <div className="text-md text-gray-500 mt-2 mb-2">
-            Kaspa is a community project – completely open source with no central governance – following in the ethos of
-            coins like Bitcoin.
-          </div>
-        </div>
-        <div className="flex flex-row items-center justify-center md:justify-end">
-          <KaspaDifferent className="" />
         </div>
       </div>
     </>
   );
 };
+
+// A live-updating feed panel with a pulsing "live" dot and a "view all" link.
+const LivePanel = ({ title, to, children }: { title: string; to: string; children: React.ReactNode }) => (
+  <div className="flex w-full flex-col rounded-4xl bg-white px-4 py-6 sm:px-6">
+    <div className="mb-3 flex items-center justify-between px-2">
+      <div className="flex items-center gap-x-2">
+        <span className="relative flex h-2.5 w-2.5">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+          <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
+        </span>
+        <span className="text-black text-lg">{title}</span>
+      </div>
+      <Link to={to} className="text-sm text-primary hover:underline">
+        View all →
+      </Link>
+    </div>
+    <div className="flex flex-col">{children}</div>
+  </div>
+);
+
+const FeedEmpty = () => (
+  <div className="flex items-center gap-x-2 px-3 py-6 text-gray-500">
+    <Spinner className="h-4 w-4" /> waiting for the next block…
+  </div>
+);
 
 interface DashboardBoxProps {
   icon: React.ReactNode;
@@ -191,19 +257,3 @@ const DashboardBox = (props: DashboardBoxProps) => {
 };
 
 export default Dashboard;
-
-interface InfoBoxProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}
-
-const DashboardInfoBox = (props: InfoBoxProps) => {
-  return (
-    <div className="flex flex-col h-full gap-y-2 bg-white p-8 rounded-2xl">
-      <>{props.icon}</>
-      <span className="text-xl">{props.title}</span>
-      <span className="text-gray-500">{props.description}</span>
-    </div>
-  );
-};

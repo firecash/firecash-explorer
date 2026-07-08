@@ -30,14 +30,14 @@ dayjs.extend(localizedFormat);
 
 export function meta({ params }: Route.LoaderArgs) {
   return [
-    { title: `Kaspa Transaction ${params.transactionId} | Kaspa Explorer` },
+    { title: `FireCash Transaction ${params.transactionId} | FireCash Explorer` },
     {
       name: "description",
-      content: "Explore Kaspa transaction. View sender, recipient, amount, status, and associated blocks and more.",
+      content: "Explore FireCash transaction. View sender, recipient, amount, status, and associated blocks and more.",
     },
     {
       name: "keywords",
-      content: "Kaspa transaction, transaction ID, blockchain transfer, sender, receiver, transaction status",
+      content: "FireCash transaction, transaction ID, blockchain transfer, sender, receiver, transaction status",
     },
   ];
 }
@@ -95,7 +95,7 @@ export default function TransactionDetails() {
         <div className={`my-4 h-[1px] bg-gray-100 sm:col-span-2`} />
 
         <div className="grid grid-cols-1 gap-x-14 gap-y-2 sm:grid-cols-[auto_1fr]">
-          <FieldName name="From" infoText="The (input) address(es) that sent KAS in this transaction." />
+          <FieldName name="From" infoText="The (input) address(es) that sent FC in this transaction." />
           <FieldValue
             value={
               <ul>
@@ -113,7 +113,7 @@ export default function TransactionDetails() {
               </ul>
             }
           />
-          <FieldName name="To" infoText="The (output) address(es) where the KAS in this transaction were sent to." />
+          <FieldName name="To" infoText="The (output) address(es) where the FC in this transaction were sent to." />
           <FieldValue
             value={
               <ul>
@@ -242,7 +242,7 @@ export default function TransactionDetails() {
                   value={
                     <>
                       <span>{fee}</span>
-                      <span className="text-gray-500 text-nowrap"> KAS</span>
+                      <span className="text-gray-500 text-nowrap"> FC</span>
                       <div className="text-gray-500">
                         {numeral((fee * (marketData?.price || 0)).toFixed(6)).format("$0,0.00[000000]")}
                       </div>
@@ -275,7 +275,7 @@ export default function TransactionDetails() {
                             {displayKAS(input.previous_outpoint_amount).split(".")[1]}
                           </span>
                         </span>
-                        <span className="text-gray-500 text-nowrap"> KAS</span>
+                        <span className="text-gray-500 text-nowrap"> FC</span>
                       </>,
                     ];
                   })}
@@ -310,7 +310,7 @@ export default function TransactionDetails() {
                     {displayKAS(output.amount).split(".")[0]}.
                     <span className="self-end pb-[0.4rem]">{displayKAS(output.amount).split(".")[1]}</span>
                   </span>
-                  <span className="text-gray-500 text-nowrap"> KAS</span>
+                  <span className="text-gray-500 text-nowrap"> FC</span>
                 </span>,
               ];
             })}

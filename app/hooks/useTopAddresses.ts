@@ -1,3 +1,4 @@
+import { API_BASE } from "../api/config";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -5,7 +6,7 @@ export const useTopAddresses = () =>
   useQuery({
     queryKey: ["topAddresses"],
     queryFn: async () => {
-      const { data } = await axios.get(`https://api.kaspa.org/addresses/top`);
+      const { data } = await axios.get(`${API_BASE}/addresses/top`);
       return data[0] as TopAddresses;
     },
   });

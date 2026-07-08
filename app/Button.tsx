@@ -14,9 +14,9 @@ const Button = (props: ButtonProps) => {
     `${props.className}`;
 
   if (props.primary) {
-    className += " bg-primary text-white";
+    className += " bg-primary text-[#fff7f3]";
   } else {
-    className += " text-gray-500 bg-white border border-gray-100";
+    className += " text-gray-500 bg-white border border-gray-200";
   }
 
   return (

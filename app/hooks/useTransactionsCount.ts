@@ -1,3 +1,4 @@
+import { API_BASE } from "../api/config";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -5,7 +6,7 @@ export const useTransactionsCount = () =>
   useQuery({
     queryKey: ["transactionsCount"],
     queryFn: async () => {
-      const { data } = await axios.get(`https://api.kaspa.org/transactions/count/`);
+      const { data } = await axios.get(`${API_BASE}/transactions/count/`);
       return data as TransactionCount;
     },
   });

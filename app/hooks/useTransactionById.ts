@@ -1,3 +1,4 @@
+import { API_BASE } from "../api/config";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -6,7 +7,7 @@ export const useTransactionById = (transactionId: string) =>
     queryKey: ["transaction", { transactionId }],
     queryFn: async () => {
       const { data } = await axios.get(
-        `https://api.kaspa.org/transactions/${transactionId}?resolve_previous_outpoints=light`,
+        `${API_BASE}/transactions/${transactionId}?resolve_previous_outpoints=light`,
       );
       return data as TransactionData;
     },

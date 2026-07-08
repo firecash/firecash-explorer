@@ -25,13 +25,13 @@ dayjs.extend(localizedFormat);
 
 export function meta() {
   return [
-    { title: "Kaspa Blocks List | Kaspa Explorer" },
+    { title: "FireCash Blocks List | FireCash Explorer" },
     {
       name: "description",
       content:
-        "Explore recent Kaspa blocks. View height, timestamp, transactions, block hash, and miner details in real-time.",
+        "Explore recent FireCash blocks. View height, timestamp, transactions, block hash, and miner details in real-time.",
     },
-    { name: "keywords", content: "Kaspa blocks, blockchain explorer, latest blocks, transactions, miners" },
+    { name: "keywords", content: "FireCash blocks, blockchain explorer, latest blocks, transactions, miners" },
   ];
 }
 
@@ -73,7 +73,7 @@ export default function Blocks() {
           <Card
             loading={isLoadingBlockReward}
             title="Block rewards"
-            value={`${numeral(blockReward?.blockreward).format("0.00")} KAS`}
+            value={`${numeral(blockReward?.blockreward).format("0.00")} FC`}
           />
         </CardContainer>
       </MainBox>

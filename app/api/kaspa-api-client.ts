@@ -1,4 +1,4 @@
-const API_BASE = "https://api.kaspa.org";
+import { API_BASE } from "./config";
 
 const DEFAULT_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -6,14 +6,19 @@ const DEFAULT_HEADERS = {
 };
 
 export async function getMarketData() {
-  const res = await fetch(`${API_BASE}/info/market-data`, {
-    headers: DEFAULT_HEADERS,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      return data;
-    });
-  return res;
+  // FireCash has no market feed yet: the endpoint returns 204 (empty). Guard against
+  // parsing an empty body (which throws "Unexpected end of JSON input") and return a
+  // neutral shape so consumers just see no price rather than crashing.
+  try {
+    const response = await fetch(`${API_BASE}/info/market-data`, { headers: DEFAULT_HEADERS });
+    if (!response.ok || response.status === 204) {
+      return { current_price: { usd: 0 }, price_change_percentage_24h: 0 };
+    }
+    const text = await response.text();
+    return text ? JSON.parse(text) : { current_price: { usd: 0 }, price_change_percentage_24h: 0 };
+  } catch {
+    return { current_price: { usd: 0 }, price_change_percentage_24h: 0 };
+  }
 }
 
 //   const res = await fetch(`${API_BASE}blocks/${hash}?includeColor=true`, {

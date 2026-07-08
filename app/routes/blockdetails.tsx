@@ -28,12 +28,12 @@ dayjs.extend(localizedFormat);
 
 export function meta({ params }: Route.LoaderArgs) {
   return [
-    { title: `Kaspa Block ${params.blockId} | Kaspa Explorer` },
+    { title: `FireCash Block ${params.blockId} | FireCash Explorer` },
     {
       name: "description",
-      content: "View Kaspa block details. Check transactions, miner, block hash, confirmations, and DAG links.",
+      content: "View FireCash block details. Check transactions, miner, block hash, confirmations, and DAG links.",
     },
-    { name: "keywords", content: "Kaspa block, blockchain explorer, block details, miner, DAG, transactions" },
+    { name: "keywords", content: "FireCash block, blockchain explorer, block details, miner, DAG, transactions" },
   ];
 }
 
@@ -238,7 +238,7 @@ export default function Blocks() {
                 {transaction.outputs.map((output) => (
                   <li>
                     {numeral(output.amount / 1_0000_0000).format("0,0.00[000000]")}
-                    <span className="text-gray-500 text-nowrap"> KAS</span>
+                    <span className="text-gray-500 text-nowrap"> FC</span>
                   </li>
                 ))}
               </ul>,

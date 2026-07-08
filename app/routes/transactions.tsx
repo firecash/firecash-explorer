@@ -13,17 +13,21 @@ import FooterHelper from "../layout/FooterHelper";
 import HelperBox from "../layout/HelperBox";
 import MainBox from "../layout/MainBox";
 import numeral from "numeral";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { useContext } from "react";
+
+dayjs.extend(relativeTime);
 
 export function meta() {
   return [
-    { title: "Kaspa Transactions List | Kaspa Explorer" },
+    { title: "FireCash Transactions List | FireCash Explorer" },
     {
       name: "description",
       content:
-        "Track the latest Kaspa transactions. View transaction ID, sender, recipient, fees, and block confirmations.",
+        "Track the latest FireCash transactions. View transaction ID, sender, recipient, fees, and block confirmations.",
     },
-    { name: "keywords", content: "Kaspa transactions, blockchain transfers, transaction ID, sender, receiver, fees" },
+    { name: "keywords", content: "FireCash transactions, blockchain transfers, transaction ID, sender, receiver, fees" },
   ];
 }
 
@@ -55,7 +59,7 @@ export default function Transactions() {
           <Card title="Average TPS (1 hr)" value={`${numeral(txCount).format("0.0")}`} loading={isLoadingTxCount} />
           <Card
             title="Regular fee"
-            value={`${numeral(regularFee).format("0.00000000")} KAS`}
+            value={`${numeral(regularFee).format("0.00000000")} FC`}
             subtext={`${numeral(regularFeeUsd).format("0,0.00[000000]")} $`}
             loading={isLoadingFee}
           />
@@ -70,16 +74,20 @@ export default function Transactions() {
           className="text-black w-full"
           headers={["Timestamp", "Transaction ID", "Amount"]}
           additionalClassNames={{ 1: "overflow-hidden " }}
-          rows={transactions.map((transaction) => [
-            "a moment ago",
-            <KasLink linkType="transaction" link to={transaction.txId} mono />,
-            <>
-              {numeral(transaction.outputs.reduce((acc, output) => acc + Number(output[1]), 0) / 1_0000_0000).format(
-                "0,0.[00]",
-              )}
-              <span className="text-gray-500 text-nowrap"> KAS</span>
-            </>,
-          ])}
+          rows={transactions.map((transaction) => {
+            // outputs are [value_sompi, kind] tuples; the first element is the value.
+            const valueSompi = transaction.outputs.reduce((acc, output) => acc + Number(output[0]), 0);
+            const isShielded = transaction.outputs.some((o) => o[1] === "shielded");
+            return [
+              transaction.timestamp ? dayjs(Number(transaction.timestamp)).fromNow() : "—",
+              <KasLink linkType="transaction" link to={transaction.txId} mono />,
+              <>
+                {numeral(valueSompi / 1_0000_0000).format("0,0.[00]")}
+                <span className="text-gray-500 text-nowrap"> FC</span>
+                {isShielded && <span className="text-gray-500 text-nowrap"> · shielded</span>}
+              </>,
+            ];
+          })}
         />
       </MainBox>
       <FooterHelper icon={Transaction}>

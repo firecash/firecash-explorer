@@ -1,3 +1,4 @@
+import { API_BASE } from "../api/config";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -12,7 +13,7 @@ export const useTransactionsSearch = (
     queryKey: ["transactions", { fields, transactionIds }],
     queryFn: async () => {
       const { data } = await axios.post(
-        `https://api.kaspa.org/transactions/search`,
+        `${API_BASE}/transactions/search`,
         {
           transactionIds,
         },

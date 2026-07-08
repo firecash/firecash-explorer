@@ -1,3 +1,4 @@
+import { API_BASE } from "../api/config";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -11,7 +12,7 @@ export const useHalving = () =>
   useQuery({
     queryKey: ["halving"],
     queryFn: async () => {
-      const { data } = await axios.get("https://api.kaspa.org/info/halving");
+      const { data } = await axios.get(`${API_BASE}/info/halving`);
       return data as HalvingInfo;
     },
   });
