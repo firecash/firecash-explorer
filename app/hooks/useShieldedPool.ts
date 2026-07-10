@@ -17,7 +17,7 @@ export interface ShieldedPoolInfo {
   turnstileIn: string;
   /** Turnstile: total value that has exited to transparent, in sompi. */
   turnstileOut: string;
-  /** Current coinbase emission, in whole FC per block. */
+  /** Current coinbase emission, in whole $firecash per block. */
   emissionPerBlock: number;
   /** Blue score the snapshot was taken at. */
   blueScore: string;

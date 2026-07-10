@@ -25,7 +25,7 @@ import { Link } from "react-router";
 
 dayjs.extend(relativeTime);
 
-// Terminal FireCash supply (~5.15B FC), used only for the "mined %" gauge.
+// Terminal FireCash supply (~5.15B $firecash), used only for the "mined %" gauge.
 const TOTAL_SUPPLY = 5_150_000_000;
 
 const shortHash = (h?: string) => (h && h.length > 16 ? `${h.slice(0, 8)}…${h.slice(-6)}` : (h ?? "—"));
@@ -105,7 +105,7 @@ const Dashboard = () => {
                     <div className="text-xs text-gray-500">{ago(t.timestamp)}</div>
                   </div>
                   <div className="shrink-0 text-right">
-                    <div className="text-black">{numeral(valueSompi / 1_0000_0000).format("0,0.[00]")} FC</div>
+                    <div className="text-black">{numeral(valueSompi / 1_0000_0000).format("0,0.[00]")} $firecash</div>
                     <div className="text-xs text-primary">shielded</div>
                   </div>
                 </Link>
@@ -129,7 +129,7 @@ const Dashboard = () => {
           <DashboardBox
             description="Total supply"
             value={numeral((coinSupply?.circulatingSupply || 0) / 1_0000_0000).format("0,0")}
-            unit="FC"
+            unit="$firecash"
             icon={<Coins className="w-5" />}
             loading={isLoadingCoinSupply}
           />
@@ -150,7 +150,7 @@ const Dashboard = () => {
           <DashboardBox
             description="Block reward"
             value={(blockReward?.blockreward || 0).toFixed(3)}
-            unit="FC"
+            unit="$firecash"
             icon={<Trophy className="w-5" />}
             loading={isLoadingBlockReward}
           />
@@ -179,7 +179,7 @@ const Dashboard = () => {
           <DashboardBox
             description="Value shielded (turnstile in)"
             value={sompiToFc(shielded?.turnstileIn)}
-            unit="FC"
+            unit="$firecash"
             icon={<Coins className="w-5" />}
             loading={isLoadingShielded}
           />
@@ -192,7 +192,7 @@ const Dashboard = () => {
           <DashboardBox
             description="Emission per block"
             value={(shielded?.emissionPerBlock ?? BRAND.initialReward).toString()}
-            unit="FC"
+            unit="$firecash"
             icon={<Trophy className="w-5" />}
             loading={isLoadingShielded}
           />

@@ -238,7 +238,7 @@ export default function Blocks() {
                 {transaction.outputs.map((output) => (
                   <li>
                     {numeral(output.amount / 1_0000_0000).format("0,0.00[000000]")}
-                    <span className="text-gray-500 text-nowrap"> FC</span>
+                    <span className="text-gray-500 text-nowrap"> $firecash</span>
                   </li>
                 ))}
               </ul>,

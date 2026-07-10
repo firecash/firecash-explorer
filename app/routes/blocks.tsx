@@ -73,7 +73,7 @@ export default function Blocks() {
           <Card
             loading={isLoadingBlockReward}
             title="Block rewards"
-            value={`${numeral(blockReward?.blockreward).format("0.00")} FC`}
+            value={`${numeral(blockReward?.blockreward).format("0.00")} $firecash`}
           />
         </CardContainer>
       </MainBox>

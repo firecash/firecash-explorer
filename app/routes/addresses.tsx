@@ -42,7 +42,7 @@ export default function Addresses() {
           <Card
             title="Value shielded"
             loading={isLoading}
-            value={`${sompiToFc(shielded?.turnstileIn)} FC`}
+            value={`${sompiToFc(shielded?.turnstileIn)} $firecash`}
             subtext="total entered via the turnstile"
           />
           <Card
@@ -54,7 +54,7 @@ export default function Addresses() {
           <Card
             title="Emission per block"
             loading={isLoading}
-            value={`${shielded?.emissionPerBlock ?? BRAND.initialReward} FC`}
+            value={`${shielded?.emissionPerBlock ?? BRAND.initialReward} $firecash`}
             subtext="minted straight into the pool"
           />
         </CardContainer>

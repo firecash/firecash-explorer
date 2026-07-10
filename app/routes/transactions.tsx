@@ -59,7 +59,7 @@ export default function Transactions() {
           <Card title="Average TPS (1 hr)" value={`${numeral(txCount).format("0.0")}`} loading={isLoadingTxCount} />
           <Card
             title="Regular fee"
-            value={`${numeral(regularFee).format("0.00000000")} FC`}
+            value={`${numeral(regularFee).format("0.00000000")} $firecash`}
             subtext={`${numeral(regularFeeUsd).format("0,0.00[000000]")} $`}
             loading={isLoadingFee}
           />
@@ -83,7 +83,7 @@ export default function Transactions() {
               <KasLink linkType="transaction" link to={transaction.txId} mono />,
               <>
                 {numeral(valueSompi / 1_0000_0000).format("0,0.[00]")}
-                <span className="text-gray-500 text-nowrap"> FC</span>
+                <span className="text-gray-500 text-nowrap"> $firecash</span>
                 {isShielded && <span className="text-gray-500 text-nowrap"> · shielded</span>}
               </>,
             ];
