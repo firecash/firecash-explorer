@@ -1,20 +1,21 @@
 // Deterministic FireCash emission schedule, mirrored from the chain's coinbase
 // constants (consensus/src/processes/coinbase.rs):
-//   * initial reward 6 $firecash/block at 10 BPS,
+//   * initial reward 60 $firecash/block at the live 1 BPS,
 //   * smooth decay with a 3-month half-life,
-//   * two-step perpetual tail: 0.6 $firecash/block until calendar month 24,
-//     then 0.3 $firecash/block forever.
-// These let the analytics page draw the real emission/supply curves client-side,
-// with no historical time-series needed.
+//   * two-step perpetual tail: 6 $firecash/block until calendar month 24,
+//     then 3 $firecash/block forever.
+// Per-second issuance is rate-invariant; these per-block figures are the 1-BPS
+// values. They let the analytics page draw the real emission/supply curves
+// client-side, with no historical time-series needed.
 
-export const INITIAL_REWARD = 6; // $firecash / block @ 10 BPS
+export const INITIAL_REWARD = 60; // $firecash / block @ 1 BPS
 export const HALF_LIFE_MONTHS = 3;
-export const TAIL_INITIAL = 0.6;
-export const TAIL_FINAL = 0.3;
+export const TAIL_INITIAL = 6;
+export const TAIL_FINAL = 3;
 export const TAIL_STEP_DOWN_MONTH = 24;
-export const BPS = 10;
+export const BPS = 1;
 export const SECONDS_PER_MONTH = 2_629_800; // 30.4375 days
-export const BLOCKS_PER_MONTH = BPS * SECONDS_PER_MONTH; // 26,298,000
+export const BLOCKS_PER_MONTH = BPS * SECONDS_PER_MONTH; // 2,629,800
 
 /** Per-block reward (whole $firecash) at a given calendar month, continuous. */
 export function rewardAtMonth(month: number): number {

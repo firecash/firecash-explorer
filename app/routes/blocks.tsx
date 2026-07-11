@@ -69,7 +69,7 @@ export default function Blocks() {
             value={`${numeral(blockDagInfo?.virtualDaaScore).format("0,0")}`}
           />
           <Card loading={isLoadingTxCount} title="Total transactions" value={`> ${totalTxCount} M `} />
-          <Card title="Average block time" value={`${numeral(avgBlockTime).format("0.0")} bps`} />
+          <Card title="Average block rate" value={`${numeral(avgBlockTime).format("0.0")} bps`} />
           <Card
             loading={isLoadingBlockReward}
             title="Block rewards"
@@ -80,7 +80,7 @@ export default function Blocks() {
 
       <div className="flex w-full flex-col rounded-4xl bg-white p-4 text-left sm:p-8">
         <HelperBox>
-          Blocks are arriving with a speed of 10 blocks per second. The network is currently at block{" "}
+          Blocks are arriving with a speed of about 1 block per second. The network is currently at block{" "}
           {numeral(blockDagInfo?.virtualDaaScore).format("0,0")}.
         </HelperBox>
 

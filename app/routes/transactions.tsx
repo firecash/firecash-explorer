@@ -68,7 +68,7 @@ export default function Transactions() {
       </MainBox>
 
       <MainBox>
-        <HelperBox>Blocks and its transactions are arriving with a speed of 10 blocks per second.</HelperBox>
+        <HelperBox>Blocks and their transactions are arriving with a speed of about 1 block per second.</HelperBox>
 
         <PageTable
           className="text-black w-full"
