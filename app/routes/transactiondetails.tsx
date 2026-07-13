@@ -1,3 +1,5 @@
+import { isCoinbaseSubnetwork } from "../utils/kaspa";
+import { confirmationsOf } from "../utils/confirmations";
 import { displayAcceptance } from "../Accepted";
 import Coinbase from "../Coinbase";
 import ErrorMessage from "../ErrorMessage";
@@ -64,7 +66,7 @@ export default function TransactionDetails() {
     );
   }
 
-  const confirmations = (virtualChainBlueScore ?? 0) - (transaction?.accepting_block_blue_score || 0);
+  const confirmations = confirmationsOf(virtualChainBlueScore, transaction?.accepting_block_blue_score);
   const transactionSum = (transaction.outputs || []).reduce((sum, output) => sum + output.amount, 0);
   const displayKAS = (x: number) => numeral((x || 0) / 1_0000_0000).format("0,0.00[000000]");
   const displaySum = displayKAS(transactionSum);
@@ -105,10 +107,12 @@ export default function TransactionDetails() {
                       <KasLink linkType="address" copy link to={addr} />
                     </li>
                   ))
-                ) : (
+                ) : isCoinbaseSubnetwork(transaction.subnetwork_id) ? (
                   <li>
                     <Coinbase />
                   </li>
+                ) : (
+                  <li className="text-gray-500">Shielded — no transparent inputs</li>
                 )}
               </ul>
             }
@@ -123,8 +127,10 @@ export default function TransactionDetails() {
                       <KasLink linkType="address" copy link to={addr} resolveName />
                     </li>
                   ))
-                ) : (
+                ) : isCoinbaseSubnetwork(transaction.subnetwork_id) ? (
                   <span>No output addresses</span>
+                ) : (
+                  <span className="text-gray-500">Shielded — no transparent outputs</span>
                 )}
               </ul>
             }

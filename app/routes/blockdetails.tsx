@@ -1,3 +1,5 @@
+import { isCoinbaseSubnetwork } from "../utils/kaspa";
+import { confirmationsOf } from "../utils/confirmations";
 import { displayAcceptance } from "../Accepted";
 import Coinbase from "../Coinbase";
 import ErrorMessage from "../ErrorMessage";
@@ -215,8 +217,10 @@ export default function Blocks() {
                       {getAddressFromOutpoint(input.previousOutpoint.transactionId, input.previousOutpoint.index)}
                     </li>
                   ))
-                ) : (
+                ) : isCoinbaseSubnetwork(transaction.subnetworkId) ? (
                   <Coinbase />
+                ) : (
+                  <li className="text-gray-500">Shielded</li>
                 )}
               </ul>,
               <ArrowRight className="inline h-4 w-4" />,
@@ -245,10 +249,10 @@ export default function Blocks() {
               <div className="flex flex-row gap-x-2 justfiy-start md:justify-end">
                 {displayAcceptance(
                   getTxFromInputTxs(transaction.verboseData.transactionId)?.is_accepted ?? false,
-                  virtualChainBlueScore
-                    ? virtualChainBlueScore -
-                        (getTxFromInputTxs(transaction.verboseData.transactionId)?.accepting_block_blue_score || 0)
-                    : undefined,
+                  confirmationsOf(
+                    virtualChainBlueScore,
+                    getTxFromInputTxs(transaction.verboseData.transactionId)?.accepting_block_blue_score,
+                  ),
                 )}
               </div>,
             ]) || []
