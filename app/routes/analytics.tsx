@@ -96,7 +96,7 @@ export default function Analytics() {
             title="Block reward"
             loading={rewardLoading}
             value={`${numeral(reward?.blockreward ?? BRAND.initialReward).format("0,0.[000]")} $firecash`}
-            subtext={`network: ${dag?.networkName ?? "mainnet"}`}
+            subtext={`network: testnet`}
           />
         </CardContainer>
       </MainBox>
