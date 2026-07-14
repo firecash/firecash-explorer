@@ -21,13 +21,13 @@ dayjs.extend(relativeTime);
 
 export function meta() {
   return [
-    { title: "FireCash Transactions List | FireCash Explorer" },
+    { title: "ZKas Transactions List | ZKas Explorer" },
     {
       name: "description",
       content:
-        "Track the latest FireCash transactions. View transaction ID, sender, recipient, fees, and block confirmations.",
+        "Track the latest ZKas transactions. View transaction ID, sender, recipient, fees, and block confirmations.",
     },
-    { name: "keywords", content: "FireCash transactions, blockchain transfers, transaction ID, sender, receiver, fees" },
+    { name: "keywords", content: "ZKas transactions, blockchain transfers, transaction ID, sender, receiver, fees" },
   ];
 }
 
@@ -59,7 +59,7 @@ export default function Transactions() {
           <Card title="Average TPS (1 hr)" value={`${numeral(txCount).format("0.0")}`} loading={isLoadingTxCount} />
           <Card
             title="Regular fee"
-            value={`${numeral(regularFee).format("0.00000000")} $firecash`}
+            value={`${numeral(regularFee).format("0.00000000")} ZKAS`}
             subtext={`${numeral(regularFeeUsd).format("0,0.00[000000]")} $`}
             loading={isLoadingFee}
           />
@@ -83,7 +83,7 @@ export default function Transactions() {
               <KasLink linkType="transaction" link to={transaction.txId} mono />,
               <>
                 {numeral(valueSompi / 1_0000_0000).format("0,0.[00]")}
-                <span className="text-gray-500 text-nowrap"> $firecash</span>
+                <span className="text-gray-500 text-nowrap"> ZKAS</span>
                 {isShielded && <span className="text-gray-500 text-nowrap"> · shielded</span>}
               </>,
             ];

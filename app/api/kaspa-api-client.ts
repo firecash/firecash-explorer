@@ -6,7 +6,7 @@ const DEFAULT_HEADERS = {
 };
 
 export async function getMarketData() {
-  // FireCash has no market feed yet: the endpoint returns 204 (empty). Guard against
+  // ZKas has no market feed yet: the endpoint returns 204 (empty). Guard against
   // parsing an empty body (which throws "Unexpected end of JSON input") and return a
   // neutral shape so consumers just see no price rather than crashing.
   try {

@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <div className="sm:text-md mt-auto flex w-full flex-col items-start rounded-t-4xl bg-[#101017] px-4 pb-6 text-gray-900 sm:px-24 sm:pb-6">
       <span className="pt-12 text-3xl font-bold tracking-tight sm:pt-14">
-        Fire<span className="text-primary">Cash</span>
+        <span className="text-primary">Z</span>Kas
       </span>
 
       <div className="flex w-full flex-row justify-start pt-9 text-gray-500">
@@ -44,10 +44,10 @@ const Footer = () => {
           <Github className="h-6 w-6 hover:cursor-pointer hover:fill-gray-900" />
         </a>
 
-        <span className="ms-auto hidden text-nowrap sm:block">© 2026 FireCash Explorer. All rights are reserved</span>
+        <span className="ms-auto hidden text-nowrap sm:block">© 2026 ZKas Explorer. All rights are reserved</span>
       </div>
 
-      <span className="pt-4 text-nowrap text-gray-500 sm:hidden">© 2026 FireCash Explorer. All rights are reserved</span>
+      <span className="pt-4 text-nowrap text-gray-500 sm:hidden">© 2026 ZKas Explorer. All rights are reserved</span>
     </div>
   );
 };

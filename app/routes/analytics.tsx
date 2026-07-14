@@ -22,15 +22,15 @@ import { useShieldedPool } from "../hooks/useShieldedPool";
 
 export function meta() {
   return [
-    { title: "FireCash Analytics - Network Stats & Charts | FireCash Explorer" },
+    { title: "ZKas Analytics - Network Stats & Charts | ZKas Explorer" },
     {
       name: "description",
       content:
-        "Live FireCash network analytics: block production, difficulty, the deterministic emission & supply schedule, and the shielded-pool privacy dashboard.",
+        "Live ZKas network analytics: block production, difficulty, the deterministic emission & supply schedule, and the shielded-pool privacy dashboard.",
     },
     {
       name: "keywords",
-      content: "FireCash analytics, emission schedule, supply, difficulty, shielded pool, privacy, turnstile",
+      content: "ZKas analytics, emission schedule, supply, difficulty, shielded pool, privacy, turnstile",
     },
   ];
 }
@@ -95,7 +95,7 @@ export default function Analytics() {
           <Card
             title="Block reward"
             loading={rewardLoading}
-            value={`${numeral(reward?.blockreward ?? BRAND.initialReward).format("0,0.[000]")} $firecash`}
+            value={`${numeral(reward?.blockreward ?? BRAND.initialReward).format("0,0.[000]")} ZKAS`}
             subtext={`network: testnet`}
           />
         </CardContainer>
@@ -108,14 +108,14 @@ export default function Analytics() {
           <span className="text-2xl">Emission schedule</span>
         </div>
         <p className="mb-4 max-w-3xl text-gray-500">
-          The per-block reward starts at 6 $firecash and decays with a 3-month half-life. Once it falls to the tail
-          floor (~year 1) a perpetual tail of <b className="text-black">0.6 $firecash</b> is paid, stepping down once to
-          a permanent <b className="text-black">0.3 $firecash</b> at month 24 — funding proof-of-work security forever.
+          The per-block reward starts at 6 ZKAS and decays with a 3-month half-life. Once it falls to the tail
+          floor (~year 1) a perpetual tail of <b className="text-black">0.6 ZKAS</b> is paid, stepping down once to
+          a permanent <b className="text-black">0.3 ZKAS</b> at month 24 — funding proof-of-work security forever.
           There is no fixed supply cap.
         </p>
         <AreaChart
           data={emission}
-          ariaLabel="Per-block reward in $firecash over the first four years"
+          ariaLabel="Per-block reward in ZKAS over the first four years"
           yMax={6.4}
           yTicks={4}
           xTicks={xTicks}
@@ -127,7 +127,7 @@ export default function Analytics() {
             { x: 24, y: 0.3, text: "0.3 forever", align: "end", dy: -12 },
           ]}
         />
-        <p className="mt-2 text-sm text-gray-500">Per-block reward ($firecash), first 4 years. Hover for any month.</p>
+        <p className="mt-2 text-sm text-gray-500">Per-block reward (ZKAS), first 4 years. Hover for any month.</p>
       </MainBox>
 
       {/* Supply growth */}
@@ -137,20 +137,20 @@ export default function Analytics() {
           <span className="text-2xl">Supply growth</span>
         </div>
         <p className="mb-4 max-w-3xl text-gray-500">
-          Cumulative $firecash minted into the shielded pool as the schedule plays out. Steeply disinflationary early,
+          Cumulative ZKAS minted into the shielded pool as the schedule plays out. Steeply disinflationary early,
           then a low constant tail. Today{" "}
-          <b className="text-black">{numeral(circulating).format("0,0")} $firecash</b> is in circulation.
+          <b className="text-black">{numeral(circulating).format("0,0")} ZKAS</b> is in circulation.
         </p>
         <AreaChart
           data={supply}
-          ariaLabel="Cumulative emitted supply in billions of $firecash over the first four years"
+          ariaLabel="Cumulative emitted supply in billions of ZKAS over the first four years"
           yTicks={4}
           xTicks={xTicks}
           formatX={fmtMonth}
           formatY={(y) => `${y.toFixed(2)}B`}
           marker={{ x: 0, y: circulating / 1e9, label: `today: ${numeral(circulating).format("0,0a")}` }}
         />
-        <p className="mt-2 text-sm text-gray-500">Cumulative emitted supply (billions of $firecash).</p>
+        <p className="mt-2 text-sm text-gray-500">Cumulative emitted supply (billions of ZKAS).</p>
       </MainBox>
 
       {/* Privacy dashboard */}
@@ -171,7 +171,7 @@ export default function Analytics() {
               centerBottom="of supply shielded"
             />
             <span className="text-center text-sm text-gray-500">
-              {numeral(tIn).format("0,0")} $firecash entered · {numeral(tOut).format("0,0")} exited
+              {numeral(tIn).format("0,0")} ZKAS entered · {numeral(tOut).format("0,0")} exited
             </span>
           </div>
 
@@ -195,8 +195,8 @@ export default function Analytics() {
               <div className="mt-3">
                 <DualBar
                   rows={[
-                    { label: "Value shielded (in)", value: tIn, display: `${numeral(tIn).format("0,0")} $firecash` },
-                    { label: "Value unshielded (out)", value: tOut, display: `${numeral(tOut).format("0,0")} $firecash` },
+                    { label: "Value shielded (in)", value: tIn, display: `${numeral(tIn).format("0,0")} ZKAS` },
+                    { label: "Value unshielded (out)", value: tOut, display: `${numeral(tOut).format("0,0")} ZKAS` },
                   ]}
                 />
               </div>
@@ -215,9 +215,9 @@ export default function Analytics() {
       </MainBox>
 
       <FooterHelper icon={Landslide}>
-        The emission and supply curves are deterministic — computed from {BRAND.name}'s coinbase constants (6 $firecash
-        initial reward, 3-month half-life, 0.6 → 0.3 $firecash perpetual tail). All other figures are live from a
-        {" "}{BRAND.name} node. 1 $firecash = 100,000,000 sompi.
+        The emission and supply curves are deterministic — computed from {BRAND.name}'s coinbase constants (6 ZKAS
+        initial reward, 3-month half-life, 0.6 → 0.3 ZKAS perpetual tail). All other figures are live from a
+        {" "}{BRAND.name} node. 1 ZKAS = 100,000,000 sompi.
       </FooterHelper>
     </>
   );
@@ -260,7 +260,7 @@ function Countdown({ targetSec, nextAmount }: { targetSec?: number; nextAmount?:
         <Unit v={secs} label="secs" />
       </div>
       <span className="text-gray-500">
-        Block reward halves to <b className="text-black">{nextAmount ?? "—"} $firecash</b> at the next 3-month interval.
+        Block reward halves to <b className="text-black">{nextAmount ?? "—"} ZKAS</b> at the next 3-month interval.
       </span>
     </div>
   );

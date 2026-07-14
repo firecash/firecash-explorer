@@ -14,8 +14,8 @@
     --text-2xl: 20px;
 
     /* Ember accent, brightened a touch to carry on dark surfaces. */
-    --color-primary: #ff6b35;
-    --color-primary-hover: #ff824f;
+    --color-primary: #17d6be;
+    --color-primary-hover: #3ee6d1;
     --color-alert: #f59e3c;
     --color-error: #f2604a;
     --color-warning: #fca034;
@@ -24,7 +24,7 @@
     --color-link: #6ea8ff;
 
     /* Status badge tints: deep, desaturated fills that sit on dark surfaces. */
-    --color-accent-red: #2e1713;
+    --color-accent-red: #0e2420;
     --color-accent-blue: #131c2e;
     --color-accent-green: #10241a;
     --color-accent-yellow: #2b2010;

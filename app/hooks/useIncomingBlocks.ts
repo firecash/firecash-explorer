@@ -15,7 +15,7 @@ export interface Block {
   }[];
 }
 
-// The FireCash backend serves the recent-block ring over REST; poll it (the chain
+// The ZKas backend serves the recent-block ring over REST; poll it (the chain
 // runs at 1 BPS, so a 1s poll keeps the live feed current without a socket server).
 export const useIncomingBlocks = () => {
   const { data } = useQuery({

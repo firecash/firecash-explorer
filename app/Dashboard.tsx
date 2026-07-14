@@ -24,7 +24,7 @@ import { Link } from "react-router";
 
 dayjs.extend(relativeTime);
 
-// Terminal FireCash supply (~5.15B $firecash), used only for the "mined %" gauge.
+// Terminal ZKas supply (~5.15B ZKAS), used only for the "mined %" gauge.
 const TOTAL_SUPPLY = 5_150_000_000;
 
 const shortHash = (h?: string) => (h && h.length > 16 ? `${h.slice(0, 8)}…${h.slice(-6)}` : (h ?? "—"));
@@ -49,13 +49,13 @@ const Dashboard = () => {
   return (
     <>
       {/* Hero — short, search-first */}
-      <div className="flex flex-col rounded-4xl bg-white px-4 py-10 sm:px-8 sm:py-10 md:ps-20 md:py-14 lg:ps-24 xl:ps-36">
-        <div className="flex w-full flex-col gap-y-3 justify-center">
-          <span className="text-3xl lg:text-[54px]">FireCash Explorer</span>
-          <span className="mb-4 text-gray-500">
+      <div className="flex flex-col rounded-4xl bg-white px-4 py-4 sm:px-8 sm:py-5 md:ps-20 lg:ps-24 xl:ps-36">
+        <div className="flex w-full flex-col gap-y-1 justify-center">
+          <span className="text-2xl lg:text-4xl">ZKas Explorer</span>
+          <span className="mb-2 text-gray-500">
             Live blocks &amp; private transactions on the shielded BlockDAG.
           </span>
-          <SearchBox value={search} onChange={setSearch} className="w-full py-4" />
+          <SearchBox value={search} onChange={setSearch} className="w-full py-3" />
         </div>
       </div>
 
@@ -103,7 +103,7 @@ const Dashboard = () => {
                     <div className="text-xs text-gray-500">{ago(t.timestamp)}</div>
                   </div>
                   <div className="shrink-0 text-right">
-                    <div className="text-black">{numeral(valueSompi / 1_0000_0000).format("0,0.[00]")} $firecash</div>
+                    <div className="text-black">{numeral(valueSompi / 1_0000_0000).format("0,0.[00]")} ZKAS</div>
                     <div className="text-xs text-primary">shielded</div>
                   </div>
                 </Link>
@@ -114,7 +114,7 @@ const Dashboard = () => {
       </div>
 
       {/* Compact stats */}
-      <div className="flex w-full flex-col rounded-4xl bg-gray-50 px-4 py-8 text-gray-900 sm:px-8 md:px-20 md:py-12 lg:px-24 xl:px-36">
+      <div className="flex w-full flex-col rounded-4xl bg-gray-50 px-4 py-6 text-gray-900 sm:px-8 md:px-20 md:py-8 lg:px-24 xl:px-36">
         <span className="mb-5 text-black text-2xl md:text-3xl">{BRAND.name} by the numbers</span>
         <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
           <DashboardBox description="Total transactions" value={`> ${totalTxCount} M`} icon={<Swap className="w-5" />} />
@@ -127,7 +127,7 @@ const Dashboard = () => {
           <DashboardBox
             description="Total supply"
             value={numeral((coinSupply?.circulatingSupply || 0) / 1_0000_0000).format("0,0")}
-            unit="$firecash"
+            unit="ZKAS"
             icon={<Coins className="w-5" />}
             loading={isLoadingCoinSupply}
           />
@@ -148,7 +148,7 @@ const Dashboard = () => {
           <DashboardBox
             description="Block reward"
             value={(blockReward?.blockreward || 0).toFixed(3)}
-            unit="$firecash"
+            unit="ZKAS"
             icon={<Trophy className="w-5" />}
             loading={isLoadingBlockReward}
           />
@@ -162,7 +162,7 @@ const Dashboard = () => {
       </div>
 
       {/* Compact shielded pool */}
-      <div className="flex w-full flex-col rounded-4xl bg-gray-50 px-4 py-8 sm:px-8 md:px-20 md:py-12 lg:px-24 xl:px-36">
+      <div className="flex w-full flex-col rounded-4xl bg-gray-50 px-4 py-6 sm:px-8 md:px-20 md:py-8 lg:px-24 xl:px-36">
         <div className="mb-5 flex items-center gap-x-3">
           <Shield className="fill-primary w-6" />
           <span className="text-black text-2xl md:text-3xl">The shielded pool</span>
@@ -177,7 +177,7 @@ const Dashboard = () => {
           <DashboardBox
             description="Value shielded (turnstile in)"
             value={sompiToFc(shielded?.turnstileIn)}
-            unit="$firecash"
+            unit="ZKAS"
             icon={<Coins className="w-5" />}
             loading={isLoadingShielded}
           />
@@ -190,7 +190,7 @@ const Dashboard = () => {
           <DashboardBox
             description="Emission per block"
             value={(shielded?.emissionPerBlock ?? BRAND.initialReward).toString()}
-            unit="$firecash"
+            unit="ZKAS"
             icon={<Trophy className="w-5" />}
             loading={isLoadingShielded}
           />

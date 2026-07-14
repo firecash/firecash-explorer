@@ -31,8 +31,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <title>FireCash Explorer</title>
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <title>ZKas Explorer</title>
+        <link rel="icon" type="image/png" href="/favicon.png" />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet" />

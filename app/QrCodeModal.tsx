@@ -31,7 +31,7 @@ const QrCodeModal = (props: QrCodeModalProps) => {
         }}
       >
         <div className="mb-8 flex w-full flex-row items-center justify-between text-[24px]">
-          <span>FireCash address</span>
+          <span>ZKas address</span>
           <Close className="fill-black cursor-pointer" onClick={() => props.setShowQr(false)} />
         </div>
 
@@ -51,7 +51,7 @@ const QrCodeModal = (props: QrCodeModalProps) => {
           </div>
         </div>
 
-        <div className="text-gray-500">Scan or copy the FireCash address</div>
+        <div className="text-gray-500">Scan or copy the ZKas address</div>
         <div className="mt-2 w-full text-center text-wrap break-all text-black">{props.value}</div>
 
         <div className="relative mt-8 w-full">

@@ -6,7 +6,7 @@ export const useTransactionCount = () =>
   useQuery({
     queryKey: ["transactionCount", {}],
     queryFn: async () => {
-      // FireCash's backend serves a single cumulative count (no per-date buckets).
+      // ZKas's backend serves a single cumulative count (no per-date buckets).
       const { data } = await axios.get<TransactionCount>(`${API_BASE}/transactions/count`);
       return [data];
     },

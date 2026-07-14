@@ -26,13 +26,13 @@ dayjs.extend(localizedFormat);
 
 export function meta() {
   return [
-    { title: "FireCash Blocks List | FireCash Explorer" },
+    { title: "ZKas Blocks List | ZKas Explorer" },
     {
       name: "description",
       content:
-        "Explore recent FireCash blocks. View height, timestamp, transactions, block hash, and miner details in real-time.",
+        "Explore recent ZKas blocks. View height, timestamp, transactions, block hash, and miner details in real-time.",
     },
-    { name: "keywords", content: "FireCash blocks, blockchain explorer, latest blocks, transactions, miners" },
+    { name: "keywords", content: "ZKas blocks, blockchain explorer, latest blocks, transactions, miners" },
   ];
 }
 
@@ -76,7 +76,7 @@ export default function Blocks() {
           <Card
             loading={isLoadingBlockReward}
             title="Block rewards"
-            value={`${numeral(blockReward?.blockreward).format("0.00")} $firecash`}
+            value={`${numeral(blockReward?.blockreward).format("0.00")} ZKAS`}
           />
         </CardContainer>
       </MainBox>

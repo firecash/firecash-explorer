@@ -2,9 +2,9 @@ import { SHIELDED_API_BASE } from "../api/config";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-// FireCash-specific: the shielded-pool state the chain commits on-chain in every
+// ZKas-specific: the shielded-pool state the chain commits on-chain in every
 // block's coinbase (anchor + nullifier accumulator + turnstile totals). Served by
-// the FireCash extension endpoint; absent on a plain kaspa-rest-server, in which
+// the ZKas extension endpoint; absent on a plain kaspa-rest-server, in which
 // case the query simply resolves to `undefined` and the UI shows placeholders.
 export interface ShieldedPoolInfo {
   /** Current global note-commitment tree root (the finalized anchor), hex. */
@@ -17,7 +17,7 @@ export interface ShieldedPoolInfo {
   turnstileIn: string;
   /** Turnstile: total value that has exited to transparent, in sompi. */
   turnstileOut: string;
-  /** Current coinbase emission, in whole $firecash per block. */
+  /** Current coinbase emission, in whole ZKAS per block. */
   emissionPerBlock: number;
   /** Blue score the snapshot was taken at. */
   blueScore: string;

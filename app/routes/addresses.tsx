@@ -12,17 +12,17 @@ import numeral from "numeral";
 
 export function meta() {
   return [
-    { title: "FireCash Addresses | FireCash Explorer" },
+    { title: "ZKas Addresses | ZKas Explorer" },
     {
       name: "description",
       content:
-        "FireCash addresses are shielded: balances and history are encrypted on-chain. Explore the shielded pool instead.",
+        "ZKas addresses are shielded: balances and history are encrypted on-chain. Explore the shielded pool instead.",
     },
-    { name: "keywords", content: "FireCash addresses, shielded, privacy, Orchard, encrypted balances" },
+    { name: "keywords", content: "ZKas addresses, shielded, privacy, Orchard, encrypted balances" },
   ];
 }
 
-// FireCash is shielded-by-default: address balances and rich lists simply do not
+// ZKas is shielded-by-default: address balances and rich lists simply do not
 // exist as public data, so instead of a (fake) top-addresses table this page shows
 // what IS publicly verifiable — the shielded pool itself.
 export default function Addresses() {
@@ -42,7 +42,7 @@ export default function Addresses() {
           <Card
             title="Value shielded"
             loading={isLoading}
-            value={`${sompiToFc(shielded?.turnstileIn)} $firecash`}
+            value={`${sompiToFc(shielded?.turnstileIn)} ZKAS`}
             subtext="total entered via the turnstile"
           />
           <Card
@@ -54,7 +54,7 @@ export default function Addresses() {
           <Card
             title="Emission per block"
             loading={isLoading}
-            value={`${shielded?.emissionPerBlock ?? BRAND.initialReward} $firecash`}
+            value={`${shielded?.emissionPerBlock ?? BRAND.initialReward} ZKAS`}
             subtext="minted straight into the pool"
           />
         </CardContainer>

@@ -1,22 +1,22 @@
-// FireCash brand + chain constants. FireCash is a shielded-by-default
+// ZKas brand + chain constants. ZKas is a shielded-by-default
 // (Orchard) rusty-kaspa fork: 1 BPS GHOSTDAG BlockDAG, kHeavyHash PoW,
-// 1 $firecash = 10^8 sompi, initial reward 60 $firecash/block.
+// 1 ZKAS = 10^8 sompi, initial reward 60 ZKAS/block.
 
 export const BRAND = {
   /** Full product name. */
-  name: "FireCash",
+  name: "ZKas",
   /** Ticker symbol. */
-  ticker: "$firecash",
+  ticker: "ZKAS",
   /** Bech32 address human-readable prefix (mainnet). */
-  addressPrefix: "firecash",
-  /** Base-unit decimals (1 $firecash = 10^8 sompi). */
+  addressPrefix: "zkas",
+  /** Base-unit decimals (1 ZKAS = 10^8 sompi). */
   decimals: 8,
-  /** Initial coinbase reward, in whole $firecash. */
+  /** Initial coinbase reward, in whole ZKAS. */
   initialReward: 60,
   /** Blocks per second. */
   bps: 1,
   /** Tagline shown in the header/hero. */
   tagline: "The shielded-by-default BlockDAG",
   /** Source repo. */
-  repoUrl: "https://github.com/firecash/firecash-explorer",
+  repoUrl: "https://zkas.info",
 } as const;

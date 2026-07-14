@@ -12,16 +12,16 @@ import { useParams } from "react-router";
 
 export function meta({ params }: Route.LoaderArgs) {
   return [
-    { title: `FireCash Address ${params.address} | FireCash Explorer` },
+    { title: `ZKas Address ${params.address} | ZKas Explorer` },
     {
       name: "description",
-      content: "A shielded FireCash address. Balance and history are encrypted on-chain, visible only to the key holder.",
+      content: "A shielded ZKas address. Balance and history are encrypted on-chain, visible only to the key holder.",
     },
-    { name: "keywords", content: "FireCash address, shielded address, Orchard, privacy, encrypted balance" },
+    { name: "keywords", content: "ZKas address, shielded address, Orchard, privacy, encrypted balance" },
   ];
 }
 
-// FireCash addresses are shielded Orchard addresses: the chain stores only
+// ZKas addresses are shielded Orchard addresses: the chain stores only
 // encrypted notes, so there is no public balance, UTXO set or history to show.
 // This page validates the address and explains exactly what is (not) public.
 export default function AddressDetails() {
