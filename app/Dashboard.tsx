@@ -19,8 +19,11 @@ import { BRAND } from "./config/brand";
 import numeral from "numeral";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useState } from "react";
+import { Suspense, lazy, useMemo, useState } from "react";
 import { Link } from "react-router";
+
+// Code-split: three.js only loads for the homepage globe, never the rest of the app.
+const ShieldedGlobe = lazy(() => import("./components/ShieldedGlobe"));
 
 dayjs.extend(relativeTime);
 
@@ -46,16 +49,32 @@ const Dashboard = () => {
     ? ""
     : Math.floor((transactionsCount!.regular + transactionsCount!.coinbase) / 1_000_000).toString();
 
+  const txIds = useMemo(() => transactions.map((t) => t.txId), [transactions]);
+
   return (
     <>
-      {/* Hero — short, search-first */}
-      <div className="flex flex-col rounded-4xl bg-white px-4 py-4 sm:px-8 sm:py-5 md:ps-20 lg:ps-24 xl:ps-36">
-        <div className="flex w-full flex-col gap-y-1 justify-center">
+      {/* Hero — the shielded globe. Every pulse is a real transaction from the
+          live feed; its location is random by design (the chain knows none). */}
+      <div className="relative flex flex-col overflow-hidden rounded-4xl bg-white lg:flex-row">
+        <div className="z-10 flex w-full flex-col justify-center gap-y-1 px-4 py-6 sm:px-8 lg:w-1/2 lg:py-12 lg:ps-16 xl:ps-24">
           <span className="text-2xl lg:text-4xl">ZKas Explorer</span>
-          <span className="mb-2 text-gray-500">
-            Live blocks &amp; private transactions on the shielded BlockDAG.
-          </span>
+          <span className="mb-2 text-gray-500">Live blocks &amp; private transactions on the shielded BlockDAG.</span>
           <SearchBox value={search} onChange={setSearch} className="w-full py-3" />
+          <div className="mt-3 flex items-center gap-x-2 text-xs text-gray-500">
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="bg-primary absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" />
+              <span className="bg-primary relative inline-flex h-2 w-2 rounded-full" />
+            </span>
+            <span>
+              Every pulse on the globe is a real transaction — its location is randomized,{" "}
+              <span className="text-primary">because the chain reveals nothing</span>.
+            </span>
+          </div>
+        </div>
+        <div className="relative h-[280px] w-full cursor-grab sm:h-[340px] lg:h-[420px] lg:w-1/2">
+          <Suspense fallback={<div className="h-full w-full" />}>
+            <ShieldedGlobe txIds={txIds} />
+          </Suspense>
         </div>
       </div>
 
@@ -65,7 +84,7 @@ const Dashboard = () => {
           {blocks.length === 0 ? (
             <FeedEmpty />
           ) : (
-            blocks.slice(0, 10).map((b) => (
+            blocks.slice(0, 3).map((b) => (
               <Link
                 key={b.block_hash}
                 to={`/blocks/${b.block_hash}`}
@@ -89,7 +108,7 @@ const Dashboard = () => {
           {transactions.length === 0 ? (
             <FeedEmpty />
           ) : (
-            transactions.slice(0, 10).map((t) => {
+            transactions.slice(0, 3).map((t) => {
               const valueSompi = t.outputs.reduce((acc, o) => acc + Number(o[0]), 0);
               return (
                 <Link

@@ -1,5 +1,6 @@
 import KasLink from "../KasLink";
 import IconMessageBox from "../IconMessageBox";
+import ShieldScan from "../components/ShieldScan";
 import AccountBalanceWallet from "../assets/account_balance_wallet.svg";
 import Shield from "../assets/verified_user.svg";
 import Visibility from "../assets/visibility.svg";
@@ -40,6 +41,9 @@ export default function AddressDetails() {
 
   return (
     <>
+      {/* The lookup theatre: the address visibly encrypts, a shield seals it. */}
+      <ShieldScan address={address} />
+
       <div className="flex w-full flex-col rounded-4xl bg-white p-4 text-left text-black sm:p-8">
         <div className="flex flex-row items-center text-2xl">
           <AccountBalanceWallet className="mr-2 h-8 w-8 fill-primary" />

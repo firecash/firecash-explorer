@@ -105,3 +105,53 @@ h1 {
 h2 {
     font-size: 24px;
 }
+
+/* --- Address shield-scan animation (ShieldScan.tsx) ------------------------- */
+
+/* Expanding radar rings behind the shield. */
+.shieldscan-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 90px;
+    height: 90px;
+    margin: -45px 0 0 -45px;
+    border: 1.5px solid color-mix(in srgb, var(--color-primary) 55%, transparent);
+    border-radius: 9999px;
+    animation: shieldscan-ping 2.7s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+    opacity: 0;
+}
+
+@keyframes shieldscan-ping {
+    0% { transform: scale(0.5); opacity: 0.8; }
+    80% { transform: scale(3.4); opacity: 0; }
+    100% { transform: scale(3.4); opacity: 0; }
+}
+
+/* The shield pops in, then settles with a soft glow once the address seals. */
+.shieldscan-shield {
+    z-index: 10;
+    transform: scale(0.6);
+    opacity: 0;
+    animation: shieldscan-pop 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) 0.25s forwards;
+    filter: drop-shadow(0 0 0 transparent);
+    transition: filter 0.8s ease;
+}
+
+.shieldscan-shield.sealed {
+    filter: drop-shadow(0 0 18px color-mix(in srgb, var(--color-primary) 55%, transparent));
+}
+
+@keyframes shieldscan-pop {
+    to { transform: scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .shieldscan-ring { animation: none; }
+    .shieldscan-shield { animation: none; transform: scale(1); opacity: 1; }
+}
+
+/* The bundled icon hardcodes fill="black" on its path; tint the hero shield teal. */
+.shieldscan-shield svg path {
+    fill: var(--color-primary);
+}

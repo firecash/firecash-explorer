@@ -48,8 +48,13 @@ export const useIncomingBlocks = () => {
 
   const transactions = useMemo(() => {
     const txs: (Block["txs"][number] & { timestamp: string })[] = [];
+    // On a DAG the same transaction is carried by several parallel blocks —
+    // dedupe by txid or the feed shows one payment as two identical rows.
+    const seen = new Set<string>();
     for (const block of blocks) {
       for (const tx of block.txs) {
+        if (seen.has(tx.txId)) continue;
+        seen.add(tx.txId);
         txs.push({ ...tx, timestamp: block.timestamp });
         if (txs.length > 20) return txs;
       }
